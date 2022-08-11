@@ -1,25 +1,39 @@
-import logo from './logo.svg';
+import React, { useState } from 'react'
+import { ToastContainer } from 'react-toastify';
 import './App.css';
+import Form from './components/form/Form'
+import ContactTable from './components/table/ContactTable'
+import {AddUser, UpdateUser} from './utils/functions'
 
-function App() {
+const initialValues={username:'', phoneNumber:'', gender:'No'}
+
+const App = () => {
+
+  const [info, setInfo]=useState(initialValues);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // console.log("app js deki:", info);
+
+    if(info.id){
+      UpdateUser(info)
+    }
+    else{
+      AddUser(info);
+    }
+    setInfo(initialValues)
+  };
+
+ const EditUser = (id, username, phoneNumber, gender) => {
+   setInfo({ id, username, phoneNumber, gender });
+   console.log('merhaba');
+ };
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Form info={info} setInfo={setInfo} handleSubmit={handleSubmit} />
+      <ContactTable EditUser={EditUser}/>
+      <ToastContainer/>
     </div>
   );
 }
 
-export default App;
+export default App
